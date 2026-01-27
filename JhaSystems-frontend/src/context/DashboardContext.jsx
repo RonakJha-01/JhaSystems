@@ -12,7 +12,7 @@ export const DashboardProvider = ({ children }) => {
       const token = localStorage.getItem("token");
 
       const res = await axios.get(
-        "http://localhost:5000/api/gr/all",
+        "https://jhasystems-backend.onrender.com/api/gr/all",
         {
           headers: {
             Authorization: `Bearer ${token}`,

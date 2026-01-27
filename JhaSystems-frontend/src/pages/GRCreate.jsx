@@ -237,7 +237,7 @@ const handleSaveGR = async () => {
     };
 
     const res = await axios.post(
-      "http://localhost:5000/api/gr",
+      "https://jhasystems-backend.onrender.com/api/gr",
       payload,
       { headers: { Authorization: `Bearer ${token}` } }
     );
@@ -266,7 +266,7 @@ const handleSaveGR = async () => {
     const token = localStorage.getItem("token");
 
     const response = await fetch(
-      `http://localhost:5000/api/gr/${grInfo.grId}/pdf`,
+      `https://jhasystems-backend.onrender.com/api/gr/${grInfo.grId}/pdf`,
       { headers: { Authorization: `Bearer ${token}` } }
     );
 

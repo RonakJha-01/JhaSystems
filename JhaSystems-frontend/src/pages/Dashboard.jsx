@@ -17,7 +17,7 @@ const Dashboard = () => {
       const token = localStorage.getItem("token");
 
       const response = await axios.get(
-        `http://localhost:5000/api/gr/${id}/pdf`,
+        `https://jhasystems-backend.onrender.com/api/gr/${id}/pdf`,
         {
           responseType: "blob",
           headers: { Authorization: `Bearer ${token}` },
