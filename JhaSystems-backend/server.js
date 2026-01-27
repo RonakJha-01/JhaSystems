@@ -16,7 +16,8 @@ connectDB();
 const app = express();
 
 // --- UPDATED CORS CONFIGURATION ---
-const allowedOrigins = [          // Local Vite Development
+const allowedOrigins = [
+  "http://localhost:5173",           // Local Vite Development
   "https://jha-systems-bills.vercel.app",    // Your Vercel Preview URL
  // "https://jhasystems.com",          // Your Final Dynadot Domain
   //"https://www.jhasystems.com"       // Include www version
