@@ -293,6 +293,24 @@ export const downloadGRPdf = async (req, res) => {
       rightRowY += 18;
     });
 
+    /* ================= CALCULATE GRAND TOTAL (EXCLUDING GOODS TABLE AMOUNT) ================= */
+    // Calculate sum of all charges only (excluding goods table amounts)
+    const totalCharges = (
+      (gr.charges.labour || 0) +
+      (gr.charges.cartage || 0) +
+      (gr.charges.doorDelivery || 0) +
+      (gr.charges.insurance || 0) +
+      (gr.charges.other || 0) +
+      (gr.charges.freight || 0) +
+      (gr.charges.lorryFreight || 0) +
+      (gr.charges.transporterCharge || 0) +
+      (gr.charges.gstAmount || 0) +
+      (gr.charges.advance || 0)
+    );
+
+    // Use existing grandTotal if available, otherwise calculate from charges only
+    const grandTotal = gr.charges.grandTotal || totalCharges;
+
     /* ================= GRAND TOTAL - SPANNING BOTH COLUMNS ================= */
     const grandTotalY = Math.max(leftRowY, rightRowY) + 10;
     
@@ -302,7 +320,7 @@ export const downloadGRPdf = async (req, res) => {
     doc.font("Helvetica-Bold").fontSize(11).fillColor("#E65100");
     doc.text("GRAND TOTAL", 45, grandTotalY + 8);
     doc.text(
-      `Rs.${Number(gr.charges.grandTotal || 0).toFixed(2)}`,
+      `Rs.${Number(grandTotal).toFixed(2)}`,
       400,
       grandTotalY + 8
     );
@@ -393,7 +411,7 @@ export const downloadGRPdf = async (req, res) => {
       return result + " Rupees Only";
     };
 
-    const grandTotalInWords = numberToWords(gr.charges.grandTotal || 0);
+    const grandTotalInWords = numberToWords(grandTotal);
     
     doc.font("Helvetica-Bold").fontSize(9).fillColor("#2E3A59");
     doc.text("Amount in Words:", 45, amountInWordsY);
