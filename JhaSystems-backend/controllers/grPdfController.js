@@ -28,34 +28,76 @@ export const downloadGRPdf = async (req, res) => {
         width: 250
       });
 
-    doc
-      .font("Helvetica")
-      .fontSize(10)
-      .fillColor("black")
-      .text(organization?.address || "", 150, 45, {
-        align: "center",
-        width: 250
-      });
+doc
+  .font("Helvetica")
+  .fontSize(10)
+  .fillColor("black");
 
-    doc
-      .font("Helvetica")
-      .fontSize(10)
-      .text(
-        `Contact: ${organization?.contactNumber || "-"} | GSTIN: ${
-          organization?.gstin || "-"
-        }`,
-        150,
-        57,
-        { align: "center", width: 250 }
-      );
 
-    // Date on Left side
-    doc
-      .font("Helvetica")
-      .fontSize(12)
-      .text(
-        `Date: ${new Date(gr.grDate).toLocaleDateString()}`, 40, 80, { align: "left", width: 200 }
-      );
+const address = organization?.address || "";
+const contactGstinText = `Contact: ${organization?.contactNumber || "-"} | GSTIN: ${organization?.gstin || "-"}`;
+
+
+const addressLines = [];
+const maxCharsPerLine = 35; 
+
+
+let remainingAddress = address;
+while (remainingAddress.length > maxCharsPerLine) {
+  let lastSpace = remainingAddress.lastIndexOf(' ', maxCharsPerLine);
+  if (lastSpace === -1) lastSpace = maxCharsPerLine;
+  addressLines.push(remainingAddress.substring(0, lastSpace));
+  remainingAddress = remainingAddress.substring(lastSpace + 1);
+}
+if (remainingAddress) {
+  addressLines.push(remainingAddress);
+}
+
+
+const finalAddressLines = addressLines.length > 0 ? addressLines : [address];
+
+
+const addressStartY = 45;
+const lineHeight = 12;
+
+
+finalAddressLines.forEach((line, index) => {
+  doc.text(line, 150, addressStartY + (index * lineHeight), {
+    align: "center",
+    width: 250
+  });
+});
+
+
+const contactGstinY = addressStartY + (finalAddressLines.length * lineHeight) + 5;
+
+doc
+  .font("Helvetica")
+  .fontSize(10)
+  .text(contactGstinText, 150, contactGstinY, {
+    align: "center",
+    width: 250
+  });
+
+// Date on Left side - Format as dd/mm/yyyy with proper month
+const formatDate = (dateString) => {
+  const date = new Date(dateString);
+  if (isNaN(date.getTime())) return "-";
+  
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // Month in between (01-12)
+  const year = date.getFullYear();
+  
+  return `${day}/${month}/${year}`;
+};
+
+doc
+  .font("Helvetica")
+  .fontSize(12)
+  .text(`Date: ${formatDate(gr.grDate)}`, 40, 80, { 
+    align: "left", 
+    width: 200 
+  });
 
     // GR Number on Right side (Prominent)
     doc
