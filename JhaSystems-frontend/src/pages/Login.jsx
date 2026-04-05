@@ -271,7 +271,7 @@ const Login = () => {
         {/* Performance Tip */}
         <div className="mt-4 text-center">
           <p className="text-xs text-gray-500">
-            ⚡ For faster login, ensure stable internet connection
+            ⚡ Our Goal is your Satisfaction! 
           </p>
         </div>
       </div>
