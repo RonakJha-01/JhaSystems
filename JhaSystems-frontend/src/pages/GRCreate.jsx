@@ -162,11 +162,10 @@ const GRCreate = () => {
       other +
       freight +
       lorryFreight +
-      transporterCharge -
-      advance;
+      transporterCharge;
 
     const gstAmount = (subTotal * gstPercent) / 100;
-    const grandTotal = subTotal + gstAmount;
+    const grandTotal = subTotal + gstAmount - advance;
 
     setCharges((p) =>
       p.gstAmount === gstAmount && p.grandTotal === grandTotal
