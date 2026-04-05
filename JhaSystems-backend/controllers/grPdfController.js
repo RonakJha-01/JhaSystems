@@ -195,120 +195,150 @@ export const downloadGRPdf = async (req, res) => {
         });
 
 
-    /* ================= GOODS TABLE ================= */
-    const goodsTableY = sectionY + 95;
-    doc.rect(40, goodsTableY, 510, 18).fillAndStroke("#F0F0F0", "#2E3A59");
+/* ================= GOODS TABLE ================= */
+const goodsTableY = sectionY + 95;
+doc.rect(40, goodsTableY, 510, 18).fillAndStroke("#F0F0F0", "#2E3A59");
 
-    doc.font("Helvetica-Bold").fontSize(9).fillColor("#2E3A59");
-    doc.text("Pkgs", 45, goodsTableY + 4);
-    doc.text("Description", 100, goodsTableY + 4);
-    doc.text("Packing", 230, goodsTableY + 4);
-    doc.text("Act.Wt", 300, goodsTableY + 4);
-    doc.text("Chg.Wt", 360, goodsTableY + 4);
-    doc.text("Rate", 420, goodsTableY + 4);
-    doc.text("Amount", 480, goodsTableY + 4);
+doc.font("Helvetica-Bold").fontSize(9).fillColor("#2E3A59");
+doc.text("Pkgs", 45, goodsTableY + 4);
+doc.text("Description", 100, goodsTableY + 4);
+doc.text("Packing", 230, goodsTableY + 4);
+doc.text("Act.Wt", 300, goodsTableY + 4);
+doc.text("Chg.Wt", 360, goodsTableY + 4);
+doc.text("Rate", 420, goodsTableY + 4);
+doc.text("Amount", 480, goodsTableY + 4);
 
-    let currentY = goodsTableY + 18;
-    gr.items.forEach((item) => {
-      doc.rect(40, currentY, 510, 18).stroke("#CCCCCC");
-      doc.font("Helvetica").fontSize(9).fillColor("black");
-      doc.text(item.packages || "-", 45, currentY + 4);
-      doc.text(item.itemName || "-", 100, currentY + 4, { width: 120 });
-      doc.text(item.packing || "-", 230, currentY + 4, { width: 60 });
-      doc.text(Number(item.actualWeight || 0).toFixed(2), 300, currentY + 4);
-      doc.text(
-        Number(item.chargeableWeight || 0).toFixed(2),
-        360,
-        currentY + 4
-      );
-      doc.text(`Rs.${Number(item.rate || 0).toFixed(2)}`, 420, currentY + 4);
-      doc.text(`Rs.${Number(item.amount || 0).toFixed(2)}`, 480, currentY + 4);
-      currentY += 18;
-    });
+let currentY = goodsTableY + 18;
+gr.items.forEach((item) => {
+  doc.rect(40, currentY, 510, 18).stroke("#CCCCCC");
+  doc.font("Helvetica").fontSize(9).fillColor("black");
+  doc.text(item.packages || "-", 45, currentY + 4);
+  doc.text(item.itemName || "-", 100, currentY + 4, { width: 120 });
+  doc.text(item.packing || "-", 230, currentY + 4, { width: 60 });
+  doc.text(Number(item.actualWeight || 0).toFixed(2), 300, currentY + 4);
+  doc.text(
+    Number(item.chargeableWeight || 0).toFixed(2),
+    360,
+    currentY + 4
+  );
+  doc.text(`Rs.${Number(item.rate || 0).toFixed(2)}`, 420, currentY + 4);
+  doc.text(`Rs.${Number(item.amount || 0).toFixed(2)}`, 480, currentY + 4);
+  currentY += 18;
+});
 
-    /* ================= SPLIT CHARGES TABLE ================= */
-    const chargesY = currentY + 10;
-    
-    // Left Charges Table
-    const leftChargesY = chargesY;
-    const leftChargesWidth = 245;
-    
-    // Left Header
-    doc.rect(40, leftChargesY, leftChargesWidth, 18).fillAndStroke("#F0F0F0", "#2E3A59");
-    doc.font("Helvetica-Bold").fontSize(9).fillColor("#2E3A59");
-    doc.text("Charges", 45, leftChargesY + 4);
-    doc.text("Amount (Rs.)", 180, leftChargesY + 4);
-    
-    // Left Charges
-    const leftCharges = [
-      ["Labour", gr.charges.labour || 0],
-      ["Cartage", gr.charges.cartage || 0],
-      ["Door Delivery", gr.charges.doorDelivery || 0],
-      ["Insurance", gr.charges.insurance || 0],
-      ["Other", gr.charges.other || 0],
-    ];
-    
-    let leftRowY = leftChargesY + 18;
-    leftCharges.forEach(([label, value]) => {
-      doc.rect(40, leftRowY, leftChargesWidth, 18).stroke("#CCCCCC");
-      doc.font("Helvetica").fontSize(9).fillColor("black");
-      doc.text(label, 45, leftRowY + 4);
-      doc.text(`Rs.${Number(value).toFixed(2)}`, 180, leftRowY + 4);
-      leftRowY += 18;
-    });
+/* ================= SPLIT CHARGES TABLE ================= */
+const chargesY = currentY + 10;
 
-    // Right Charges Table
-    const rightChargesY = chargesY;
-    const rightChargesWidth = 245;
-    
-    // Right Header
-    doc.rect(305, rightChargesY, rightChargesWidth, 18).fillAndStroke("#F0F0F0", "#2E3A59");
-    doc.font("Helvetica-Bold").fontSize(9).fillColor("#2E3A59");
-    doc.text("Charges", 310, rightChargesY + 4);
-    doc.text("Amount (Rs.)", 445, rightChargesY + 4);
-    
-    // Right Charges
-    const rightCharges = [
-      ["Freight", gr.charges.freight || 0],
-      ["Lorry Freight", gr.charges.lorryFreight || 0],
-      ["Transporter Charge", gr.charges.transporterCharge || 0],
-      ["GST Percent", gr.charges.gstPercent || 0],
-      ["GST", gr.charges.gstAmount || 0],
-      ["Advance", gr.charges.advance || 0],
-    ];
-    
-    let rightRowY = rightChargesY + 18;
-    rightCharges.forEach(([label, value]) => {
-      doc.rect(305, rightRowY, rightChargesWidth, 18).stroke("#CCCCCC");
-      doc.font("Helvetica").fontSize(9).fillColor("black");
-      doc.text(label, 310, rightRowY + 4);
-      if (label === "GST Percent") {
-        // Remove "Rs." and add "%" symbol for GST Percent only
-        doc.text(`${Number(value).toFixed(2)}%`, 445, rightRowY + 4);
-      } else if (label === "Bill Payment") {
-        doc.text(value.toString(), 445, rightRowY + 4);
-      } else {
-        doc.text(`Rs.${Number(value).toFixed(2)}`, 445, rightRowY + 4);
-      }
-      rightRowY += 18;
-    });
+// Calculate GRAND TOTAL correctly (excluding item amounts)
+// Get values from gr.charges object
+const labour = Number(gr.charges.labour || 0);
+const cartage = Number(gr.charges.cartage || 0);
+const doorDelivery = Number(gr.charges.doorDelivery || 0);
+const insurance = Number(gr.charges.insurance || 0);
+const other = Number(gr.charges.other || 0);
+const freight = Number(gr.charges.freight || 0);
+const lorryFreight = Number(gr.charges.lorryFreight || 0);
+const transporterCharge = Number(gr.charges.transporterCharge || 0);
+const gstPercent = Number(gr.charges.gstPercent || 0);
+const advance = Number(gr.charges.advance || 0);
 
-    /* ================= GRAND TOTAL - SPANNING BOTH COLUMNS ================= */
-    const grandTotalY = Math.max(leftRowY, rightRowY) + 10;
-    
-    // Background highlight for grand total (spans full width)
-    doc.rect(40, grandTotalY, 510, 25).fill("#FFF8E1").stroke("#FF9800");
-    
-    doc.font("Helvetica-Bold").fontSize(11).fillColor("#E65100");
-    doc.text("GRAND TOTAL", 45, grandTotalY + 8);
-    doc.text(
-      `Rs.${Number(gr.charges.grandTotal || 0).toFixed(2)}`,
-      400,
-      grandTotalY + 8
-    );
+// Calculate subtotal BEFORE GST (only the chargeable services)
+const subtotalBeforeGST = labour + cartage + doorDelivery + insurance + other + freight + lorryFreight + transporterCharge;
 
-    /* ================= GRAND TOTAL IN WORDS ================= */
-    const amountInWordsY = grandTotalY + 30;
+// Calculate GST amount correctly
+const calculatedGSTAmount = (subtotalBeforeGST * gstPercent) / 100;
+
+// Calculate Grand Total (subtotal + GST - Advance)
+const calculatedGrandTotal = subtotalBeforeGST + calculatedGSTAmount - advance;
+
+// Update the gr.charges object with calculated values
+gr.charges.gstAmount = calculatedGSTAmount;
+gr.charges.grandTotal = calculatedGrandTotal;
+
+// Left Charges Table
+const leftChargesY = chargesY;
+const leftChargesWidth = 245;
+
+// Left Header
+doc.rect(40, leftChargesY, leftChargesWidth, 18).fillAndStroke("#F0F0F0", "#2E3A59");
+doc.font("Helvetica-Bold").fontSize(9).fillColor("#2E3A59");
+doc.text("Charges", 45, leftChargesY + 4);
+doc.text("Amount (Rs.)", 180, leftChargesY + 4);
+
+// Left Charges
+const leftCharges = [
+  ["Labour", labour],
+  ["Cartage", cartage],
+  ["Door Delivery", doorDelivery],
+  ["Insurance", insurance],
+  ["Other", other],
+];
+
+let leftRowY = leftChargesY + 18;
+leftCharges.forEach(([label, value]) => {
+  doc.rect(40, leftRowY, leftChargesWidth, 18).stroke("#CCCCCC");
+  doc.font("Helvetica").fontSize(9).fillColor("black");
+  doc.text(label, 45, leftRowY + 4);
+  doc.text(`Rs.${value.toFixed(2)}`, 180, leftRowY + 4);
+  leftRowY += 18;
+});
+
+// Right Charges Table
+const rightChargesY = chargesY;
+const rightChargesWidth = 245;
+
+// Right Header
+doc.rect(305, rightChargesY, rightChargesWidth, 18).fillAndStroke("#F0F0F0", "#2E3A59");
+doc.font("Helvetica-Bold").fontSize(9).fillColor("#2E3A59");
+doc.text("Charges", 310, rightChargesY + 4);
+doc.text("Amount (Rs.)", 445, rightChargesY + 4);
+
+// Right Charges
+const rightCharges = [
+  ["Freight", freight],
+  ["Lorry Freight", lorryFreight],
+  ["Transporter Charge", transporterCharge],
+  ["GST Percent", gstPercent],
+  ["GST", calculatedGSTAmount],
+  ["Advance", advance],
+];
+
+let rightRowY = rightChargesY + 18;
+rightCharges.forEach(([label, value]) => {
+  doc.rect(305, rightRowY, rightChargesWidth, 18).stroke("#CCCCCC");
+  doc.font("Helvetica").fontSize(9).fillColor("black");
+  doc.text(label, 310, rightRowY + 4);
+  if (label === "GST Percent") {
+    doc.text(`${value.toFixed(2)}%`, 445, rightRowY + 4);
+  } else if (label === "Advance") {
+    doc.text(`Rs.${value.toFixed(2)}`, 445, rightRowY + 4);
+  } else {
+    doc.text(`Rs.${value.toFixed(2)}`, 445, rightRowY + 4);
+  }
+  rightRowY += 18;
+});
+
+/* ================= SUBTOTAL DISPLAY (Optional - for clarity) ================= */
+const subtotalY = Math.max(leftRowY, rightRowY) + 5;
+doc.font("Helvetica-Bold").fontSize(9).fillColor("#555555");
+doc.text(`Subtotal (before GST): Rs.${subtotalBeforeGST.toFixed(2)}`, 40, subtotalY);
+
+/* ================= GRAND TOTAL - SPANNING BOTH COLUMNS ================= */
+const grandTotalY = subtotalY + 15;
+
+// Background highlight for grand total (spans full width)
+doc.rect(40, grandTotalY, 510, 25).fill("#FFF8E1").stroke("#FF9800");
+
+doc.font("Helvetica-Bold").fontSize(11).fillColor("#E65100");
+doc.text("GRAND TOTAL", 45, grandTotalY + 8);
+doc.text(
+  `Rs.${calculatedGrandTotal.toFixed(2)}`,
+  400,
+  grandTotalY + 8
+);
+
+/* ================= GRAND TOTAL IN WORDS ================= */
+const amountInWordsY = grandTotalY + 30;
     
     // Function to convert number to words
 const numberToWords = (num) => {
