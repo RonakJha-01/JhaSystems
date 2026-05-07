@@ -36,13 +36,13 @@ const Login = () => {
 
     // Set timeout to prevent hanging requests (15 seconds max)
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 15000);
+    const timeoutId = setTimeout(() => controller.abort(), 50000);
 
     try {
       const res = await api.post("/auth/login", form, {
         signal: controller.signal,
         // Add timeout to axios config
-        timeout: 10000,
+        timeout: 500000,
       });
 
       clearTimeout(timeoutId);
