@@ -66,7 +66,7 @@ doc
 // Company Name
 doc
   .font("Times-Bold")
-  .fontSize(15)
+  .fontSize(16)
   .fillColor("#2E3A59")
   .text(
     organization?.companyName || "PARTNER TRANSPORT SERVICES",
@@ -79,15 +79,8 @@ doc
   );
 
 // Organization Address
+// Organization Address
 const organizationAddress = organization?.address || "-";
-
-const addressHeight = doc.heightOfString(
-  organizationAddress,
-  {
-    width: 440,
-    align: "center",
-  }
-);
 
 doc
   .font("Helvetica")
@@ -103,6 +96,8 @@ doc
     }
   );
 
+// Exact ending position after address rendering
+const headerEndY = doc.y + 4;
 // Dynamic header ending position
 const headerEndY = 42 + addressHeight + 10;
 
