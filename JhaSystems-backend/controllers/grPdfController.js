@@ -98,8 +98,7 @@ doc
 
 // Exact ending position after address rendering
 const headerEndY = doc.y + 4;
-// Dynamic header ending position
-const headerEndY = 42 + addressHeight + 10;
+
 
 /* ================= LR META INFORMATION ================= */
 
