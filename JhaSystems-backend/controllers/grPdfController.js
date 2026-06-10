@@ -19,72 +19,92 @@ export const downloadGRPdf = async (req, res) => {
 
 /* ================= COMPACT LR HEADER ================= */
 
-// Jurisdiction Line
+// Top Information Row
+
+doc
+  .font("Helvetica")
+  .fontSize(7)
+  .fillColor("#555555")
+  .text(
+    `GSTIN/UIN: ${organization?.gstin || "-"}`,
+    40,
+    8,
+    {
+      width: 170,
+      align: "left",
+    }
+  );
+
 doc
   .font("Helvetica")
   .fontSize(7)
   .fillColor("#555555")
   .text(
     "Subject to Surat Jurisdiction",
-    40,
+    170,
     8,
     {
+      width: 250,
       align: "center",
-      width: 510,
-      underline: true,
+    }
+  );
+
+doc
+  .font("Helvetica")
+  .fontSize(7)
+  .fillColor("#555555")
+  .text(
+    `Contact: ${organization?.contactNumber || "-"}`,
+    420,
+    8,
+    {
+      width: 130,
+      align: "right",
     }
   );
 
 // Company Name
 doc
-  .font("Helvetica-Bold")
+  .font("Times-Bold")
   .fontSize(15)
   .fillColor("#2E3A59")
   .text(
     organization?.companyName || "PARTNER TRANSPORT SERVICES",
     40,
-    20,
+    22,
     {
       align: "center",
       width: 510,
     }
   );
 
-// Organization Address (auto-wrap, no manual splitting)
+// Organization Address
 const organizationAddress = organization?.address || "-";
 
-const addressHeight = doc.heightOfString(organizationAddress, {
-  width: 440,
-  align: "center",
-});
-
-doc
-  .font("Helvetica")
-  .fontSize(8)
-  .fillColor("black")
-  .text(organizationAddress, 75, 40, {
+const addressHeight = doc.heightOfString(
+  organizationAddress,
+  {
     width: 440,
     align: "center",
-  });
-
-// Contact + GST
-const contactGstinText = `Contact: ${
-  organization?.contactNumber || "-"
-} | GSTIN/UIN: ${organization?.gstin || "-"}`;
-
-const contactY = 40 + addressHeight + 2;
+  }
+);
 
 doc
   .font("Helvetica")
   .fontSize(8)
   .fillColor("black")
-  .text(contactGstinText, 40, contactY, {
-    width: 510,
-    align: "center",
-  });
+  .text(
+    organizationAddress,
+    75,
+    42,
+    {
+      width: 440,
+      align: "center",
+    }
+  );
 
 // Dynamic header ending position
-const headerEndY = contactY + 14;
+const headerEndY = 42 + addressHeight + 10;
 
 /* ================= LR META INFORMATION ================= */
 
