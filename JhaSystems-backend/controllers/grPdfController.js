@@ -35,7 +35,7 @@ doc
 
 
 const address = organization?.address || "";
-const contactGstinText = `Contact: ${organization?.contactNumber || "-"} | GSTIN: ${organization?.gstin || "-"}`;
+const contactGstinText = `Contact: ${organization?.contactNumber || "-"} | GSTIN/UIN: ${organization?.gstin || "-"}`;
 
 
 const addressLines = [];
