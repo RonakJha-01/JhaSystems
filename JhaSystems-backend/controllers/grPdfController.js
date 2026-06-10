@@ -54,7 +54,7 @@ doc
 const organizationAddress = organization?.address || "-";
 
 const addressHeight = doc.heightOfString(organizationAddress, {
-  width: 400,
+  width: 440,
   align: "center",
 });
 
@@ -272,17 +272,6 @@ doc
     lineGap: 1,
   });
 
-
-    /* ===== TRANSPORT DETAILS TABLE (RIGHT) ===== */
-    // Transport Header
-    doc.rect(400, sectionY, 150, 18).fillAndStroke("#F0F0F0", "#2E3A59");
-    doc
-      .font("Helvetica-Bold")
-      .fontSize(9)
-      .fillColor("#2E3A59")
-      .text("TRANSPORT DETAILS", 425, sectionY + 5, {
-        width: 100,
-      });
 
 /* ===== TRANSPORT INFORMATION ===== */
 
@@ -619,13 +608,96 @@ doc.text(
 
 const totalSectionEndY = grandTotalY + 18;
 
+/* ================= NUMBER TO WORDS HELPER ================= */
+
+const numberToWords = (num) => {
+  const ones = [
+    "", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine",
+    "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen",
+    "Seventeen", "Eighteen", "Nineteen",
+  ];
+
+  const tens = [
+    "", "", "Twenty", "Thirty", "Forty", "Fifty",
+    "Sixty", "Seventy", "Eighty", "Ninety",
+  ];
+
+  if (num === 0) return "Zero Rupees Only";
+
+  const convertLessThanThousand = (n) => {
+    if (n === 0) return "";
+    if (n < 20) return ones[n];
+
+    if (n < 100) {
+      return (
+        tens[Math.floor(n / 10)] +
+        (n % 10 !== 0 ? " " + ones[n % 10] : "")
+      );
+    }
+
+    return (
+      ones[Math.floor(n / 100)] +
+      " Hundred" +
+      (n % 100 !== 0
+        ? " and " + convertLessThanThousand(n % 100)
+        : "")
+    );
+  };
+
+  let integerPart = Math.floor(num);
+  const decimalPart = Math.round((num - integerPart) * 100);
+
+  let result = "";
+
+  if (integerPart >= 10000000) {
+    result +=
+      convertLessThanThousand(
+        Math.floor(integerPart / 10000000)
+      ) + " Crore ";
+    integerPart %= 10000000;
+  }
+
+  if (integerPart >= 100000) {
+    result +=
+      convertLessThanThousand(
+        Math.floor(integerPart / 100000)
+      ) + " Lakh ";
+    integerPart %= 100000;
+  }
+
+  if (integerPart >= 1000) {
+    result +=
+      convertLessThanThousand(
+        Math.floor(integerPart / 1000)
+      ) + " Thousand ";
+    integerPart %= 1000;
+  }
+
+  if (integerPart > 0) {
+    result += convertLessThanThousand(integerPart);
+  }
+
+  result = result.trim();
+
+  if (decimalPart > 0) {
+    result +=
+      " Rupees " +
+      convertLessThanThousand(decimalPart) +
+      " Paise Only";
+  } else {
+    result += " Rupees Only";
+  }
+
+  return result;
+};
+
 /* ================= AMOUNT IN WORDS ================= */
 
 // Start below total section
 const amountInWordsY = totalSectionEndY + 4;
 
 const grandTotalInWords = numberToWords(
-  gr.charges.grandTotal || 0
+  calculatedGrandTotal
 );
 
 // Calculate actual height required
