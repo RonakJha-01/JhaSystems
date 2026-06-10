@@ -164,10 +164,11 @@ doc
 
 doc
   .font("Helvetica")
-  .fontSize(8)
+  .fontSize(10)
   .fillColor("black")
   .text(gr.paymentMode || "To Pay", 235, deliveryPaymentY, {
     width: 80,
+    underline: true,
   });
 
 // Payment Received (only for Paid mode)
