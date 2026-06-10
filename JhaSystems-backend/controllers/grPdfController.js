@@ -66,7 +66,7 @@ doc
 // Company Name
 doc
   .font("Times-Bold")
-  .fontSize(16)
+  .fontSize(20)
   .fillColor("#2E3A59")
   .text(
     organization?.companyName || "PARTNER TRANSPORT SERVICES",
