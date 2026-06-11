@@ -7,7 +7,7 @@ const cities = [
   "Ahmedabad", "Amritsar", "Bengaluru", "Bhopal", "Bhiwandi",
   "Chennai", "Delhi", "Hyderabad", "Indore", "Jaipur",
   "Kolkata", "Mumbai", "Nagpur", "Pune", "Rajkot",
-  "Surat", "Vadodara"
+  "Surat", "Vadodara", "Visakhapatnam"
 ];
 
 const GRCreate = () => {
