@@ -309,8 +309,8 @@ const handleSaveGR = async () => {
 
   /* ================= UI ================= */
   return (
-    <div className="min-h-screen bg-linear-to-br from-gray-50 to-gray-100 p-4 md:p-6">
-      <div className="max-w-7xl mx-auto">
+    <div className="w-full overflow-x-hidden bg-linear-to-br from-gray-50 to-gray-100 p-3 sm:p-4 md:p-6 lg:p-8">
+      <div className="w-full max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-800">Create Goods Receipt</h1>
@@ -504,113 +504,172 @@ const handleSaveGR = async () => {
           </div>
 
           {/* GOODS */}
-          <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-200">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-xl font-semibold text-gray-800 flex items-center gap-2">
-                <span className="p-2 bg-yellow-100 text-yellow-600 rounded-lg">
-                  📦
-                </span>
-                Goods Details
-              </h2>
+<div className="bg-white rounded-xl shadow-lg p-4 sm:p-6 border border-gray-200">
+  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6">
+    <h2 className="text-lg sm:text-xl font-semibold text-gray-800 flex items-center gap-2">
+      <span className="p-2 bg-yellow-100 text-yellow-600 rounded-lg">
+        📦
+      </span>
+      Goods Details
+    </h2>
+
+    <button
+      onClick={addRow}
+      className="w-full sm:w-auto px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200 flex items-center justify-center gap-2"
+    >
+      <span>+</span>
+      Add Item
+    </button>
+  </div>
+
+  <div className="overflow-x-auto rounded-lg border border-gray-200">
+    <table className="w-full min-w-250 divide-y divide-gray-200">
+      <thead className="bg-gray-50">
+        <tr>
+          <th className="px-3 py-3 text-left text-xs font-medium text-gray-700 uppercase whitespace-nowrap">
+            Item
+          </th>
+          <th className="px-3 py-3 text-left text-xs font-medium text-gray-700 uppercase whitespace-nowrap">
+            Packing
+          </th>
+          <th className="px-3 py-3 text-left text-xs font-medium text-gray-700 uppercase whitespace-nowrap">
+            Pkgs
+          </th>
+          <th className="px-3 py-3 text-left text-xs font-medium text-gray-700 uppercase whitespace-nowrap">
+            Act Wt
+          </th>
+          <th className="px-3 py-3 text-left text-xs font-medium text-gray-700 uppercase whitespace-nowrap">
+            Chg Wt
+          </th>
+          <th className="px-3 py-3 text-left text-xs font-medium text-gray-700 uppercase whitespace-nowrap">
+            Rate
+          </th>
+          <th className="px-3 py-3 text-left text-xs font-medium text-gray-700 uppercase whitespace-nowrap">
+            Amount
+          </th>
+          <th className="px-3 py-3 text-center text-xs font-medium text-gray-700 uppercase whitespace-nowrap">
+            Action
+          </th>
+        </tr>
+      </thead>
+
+      <tbody className="bg-white divide-y divide-gray-200">
+        {items.map((r, i) => (
+          <tr
+            key={i}
+            className="hover:bg-gray-50 transition-colors duration-150"
+          >
+            {/* Item */}
+            <td className="px-3 py-3">
+              <input
+                className="w-full min-w-45 px-3 py-2 text-sm border border-gray-300 rounded-md focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500"
+                value={r.itemName}
+                onChange={(e) =>
+                  updateItem(i, "itemName", e.target.value)
+                }
+                ref={(el) => (fieldRefs.current[9 + i * 7] = el)}
+                placeholder="Item name"
+              />
+            </td>
+
+            {/* Packing */}
+            <td className="px-3 py-3">
+              <input
+                className="w-full min-w-35 px-3 py-2 text-sm border border-gray-300 rounded-md focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500"
+                value={r.packing}
+                onChange={(e) =>
+                  updateItem(i, "packing", e.target.value)
+                }
+                ref={(el) => (fieldRefs.current[10 + i * 7] = el)}
+                placeholder="Packing type"
+              />
+            </td>
+
+            {/* Packages */}
+            <td className="px-3 py-3">
+              <input
+                className="w-full min-w-25 px-3 py-2 text-sm border border-gray-300 rounded-md focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500"
+                value={r.packages}
+                onChange={(e) =>
+                  updateItem(i, "packages", e.target.value)
+                }
+                ref={(el) => (fieldRefs.current[11 + i * 7] = el)}
+                placeholder="Number"
+              />
+            </td>
+
+            {/* Actual Weight */}
+            <td className="px-3 py-3">
+              <input
+                className="w-full min-w-27.5 px-3 py-2 text-sm border border-gray-300 rounded-md focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500"
+                value={r.actualWeight}
+                onChange={(e) =>
+                  updateItem(i, "actualWeight", e.target.value)
+                }
+                ref={(el) => (fieldRefs.current[12 + i * 7] = el)}
+                placeholder="Weight"
+              />
+            </td>
+
+            {/* Chargeable Weight */}
+            <td className="px-3 py-3">
+              <input
+                className="w-full min-w-27.5 px-3 py-2 text-sm border border-gray-300 rounded-md focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500"
+                value={r.chargeableWeight}
+                onChange={(e) =>
+                  updateItem(i, "chargeableWeight", e.target.value)
+                }
+                ref={(el) => (fieldRefs.current[13 + i * 7] = el)}
+                placeholder="Weight"
+              />
+            </td>
+
+            {/* Rate */}
+            <td className="px-3 py-3">
+              <input
+                className="w-full min-w-25 px-3 py-2 text-sm border border-gray-300 rounded-md focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500"
+                value={r.rate}
+                onChange={(e) =>
+                  updateItem(i, "rate", e.target.value)
+                }
+                ref={(el) => (fieldRefs.current[14 + i * 7] = el)}
+                placeholder="Rate"
+              />
+            </td>
+
+            {/* Amount */}
+            <td className="px-3 py-3 text-right font-medium whitespace-nowrap">
+              ₹{r.amount.toFixed(2)}
+            </td>
+
+            {/* Action */}
+            <td className="px-3 py-3 text-center">
               <button
-                onClick={addRow}
-                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-200 flex items-center gap-2"
+                onClick={() => removeRow(i)}
+                className="text-red-500 hover:text-red-700 p-1 rounded-full hover:bg-red-50 transition-colors duration-150"
+                disabled={items.length === 1}
               >
-                <span>+</span> Add Item
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                </svg>
               </button>
-            </div>
-            
-            <div className="overflow-x-auto rounded-lg border border-gray-200">
-              <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-gray-50">
-                  <tr>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Item</th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Packing</th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Pkgs</th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Act Wt</th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Chg Wt</th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Rate</th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Amount</th>
-                    <th className="px-4 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">Action</th>
-                  </tr>
-                </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
-                  {items.map((r, i) => (
-                    <tr key={i} className="hover:bg-gray-50 transition-colors duration-150">
-                      <td className="px-4 py-3">
-                        <input
-                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500"
-                          value={r.itemName}
-                          onChange={e => updateItem(i, "itemName", e.target.value)}
-                          ref={el => fieldRefs.current[9 + (i * 7)] = el}
-                          placeholder="Item name"
-                        />
-                      </td>
-                      <td className="px-4 py-3">
-                        <input
-                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500"
-                          value={r.packing}
-                          onChange={e => updateItem(i, "packing", e.target.value)}
-                          ref={el => fieldRefs.current[10 + (i * 7)] = el}
-                          placeholder="Packing type"
-                        />
-                      </td>
-                      <td className="px-4 py-3">
-                        <input
-                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500"
-                          value={r.packages}
-                          onChange={e => updateItem(i, "packages", e.target.value)}
-                          ref={el => fieldRefs.current[11 + (i * 7)] = el}
-                          placeholder="Number"
-                        />
-                      </td>
-                      <td className="px-4 py-3">
-                        <input
-                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500"
-                          value={r.actualWeight}
-                          onChange={e => updateItem(i, "actualWeight", e.target.value)}
-                          ref={el => fieldRefs.current[12 + (i * 7)] = el}
-                          placeholder="Weight"
-                        />
-                      </td>
-                      <td className="px-4 py-3">
-                        <input
-                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500"
-                          value={r.chargeableWeight}
-                          onChange={e => updateItem(i, "chargeableWeight", e.target.value)}
-                          ref={el => fieldRefs.current[13 + (i * 7)] = el}
-                          placeholder="Weight"
-                        />
-                      </td>
-                      <td className="px-4 py-3">
-                        <input
-                          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-yellow-500 focus:border-yellow-500"
-                          value={r.rate}
-                          onChange={e => updateItem(i, "rate", e.target.value)}
-                          ref={el => fieldRefs.current[14 + (i * 7)] = el}
-                          placeholder="Rate"
-                        />
-                      </td>
-                      <td className="px-4 py-3 text-right font-medium">
-                        ₹{r.amount.toFixed(2)}
-                      </td>
-                      <td className="px-4 py-3 text-center">
-                        <button
-                          onClick={() => removeRow(i)}
-                          className="text-red-500 hover:text-red-700 p-1 rounded-full hover:bg-red-50 transition-colors duration-150"
-                          disabled={items.length === 1}
-                        >
-                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                          </svg>
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </div>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+</div>
 
           {/* TRANSPORT */}
           <div className="bg-white rounded-xl shadow-lg p-6 border border-gray-200">
@@ -800,7 +859,7 @@ const handleSaveGR = async () => {
             </div>
             
             <div className="mt-6 pt-6 border-t border-gray-200">
-              <div className="flex items-center justify-between text-sm text-gray-500">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 text-sm text-gray-500">
                 <div className="flex items-center gap-4">
                   <div className="flex items-center gap-2">
                     <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
