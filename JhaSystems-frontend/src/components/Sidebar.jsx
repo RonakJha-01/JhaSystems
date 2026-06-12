@@ -59,12 +59,13 @@ const Sidebar = () => {
       {/* Sidebar */}
       <aside
         className={`
-          fixed lg:static top-0 left-0 z-50
-          h-screen w-64 max-w-[85vw]
-          bg-slate-900 text-white flex flex-col shadow-lg
-          transform transition-transform duration-300 ease-in-out
-          ${open ? "translate-x-0" : "-translate-x-full"}
-          lg:translate-x-0
+          fixed lg:relative top-0 left-0 z-50
+    h-screen lg:h-auto lg:self-stretch
+    w-64 max-w-[85vw]
+    bg-slate-900 text-white flex flex-col shadow-lg
+    transform transition-transform duration-300 ease-in-out
+    ${open ? "translate-x-0" : "-translate-x-full"}
+    lg:translate-x-0
         `}
       >
         {/* Branding */}
